@@ -1,5 +1,4 @@
 //TO-DO
-//Añadir contadores e impresores para calcular número de operaciones y tiempo.
 //Crear gráficas
 //Tras eso, modificar el algoritmo para que se detenga y haga subdivisiones
 //Hacer una memoria de la práctica
@@ -8,40 +7,53 @@ import java.lang.Math;
 import java.util.Arrays;
 
 public class InsercionQS {
-	public final static int MAX_NUMBER = 10000000;
+	public final static int MAX_TAM_VECTOR = 1000000;
+	public final static int MIN_TAM_VECTOR = 1000;
 	public final static int MAX_VECTOR = 10;
-	public final static int TAM_INSERCION=50;
+	public static int tam;
+	public static int TAM_INSERCION;
 	private static long numComparaciones;
 	private static long numAsignaciones;
 
+	private static long tiempoMedia=0;
+	private static long comparacionesMedia=0;
+	private static long asignacionesMedia=0;
+
 	public static void main(String args[]) {
-		int tam = Integer.parseInt(args[0]);
-		int numVect = (int) (Math.random() * MAX_VECTOR);
-		int[] array = new int[tam];
+		int numVect = Integer.parseInt(args[0]);
+		TAM_INSERCION = Integer.parseInt(args[1]);
+		tam = Integer.parseInt(args[2]);
+		int[] array;
 
 		for (int n = 0; n < numVect; n++) {
 
+			// tam = MIN_TAM_VECTOR + (int) (Math.random() * (MAX_TAM_VECTOR -
+			// MIN_TAM_VECTOR));
+			array = new int[tam];
 			numAsignaciones = 0;
 			numComparaciones = 0;
 			long tiempoInicio = System.currentTimeMillis();
 
 			for (int i = 0; i < tam; i++) {
-				array[i] = (int) (Math.random() * MAX_NUMBER);
+				array[i] = (int) (Math.random() * tam);
 			}
 			quickSort(array, 0, tam - 1);
 
+			System.out.println("insDoin");
+			insertion(array);
+			System.out.println("insDone");
 			long tiempoFinal = System.currentTimeMillis();
 
-			for (int j = 0; j < tam; j++) {
-				System.out.println(array[j]);
-			}
+			tiempoMedia += tiempoFinal-tiempoInicio;
+			comparacionesMedia+=numComparaciones;
+			asignacionesMedia+=numAsignaciones;
 
-			System.out.println("Tiempo transcurrido: " + (tiempoFinal - tiempoInicio));
-			System.out.println("Número de comparaciones: " + numComparaciones);
-			System.out.println("Número de asignaciones: " + numAsignaciones);
-			System.out.println("");
 		}
-
+		System.out.println("Tamaño de vector: " + tam);
+		System.out.println("Tiempo transcurrido: " + tiempoMedia/numVect + " milisegundos.");
+		System.out.println("Número de comparaciones: " + comparacionesMedia/numVect);
+		System.out.println("Número de asignaciones: " +asignacionesMedia/numVect);
+		System.out.println("--------------------------------------");
 	}
 
 	public static int pivote(int[] arr) {
@@ -100,8 +112,6 @@ public class InsercionQS {
 
 			if (high > i)
 				quickSort(arr, i, high);
-		}else{
-			insertion(arr);
 		}
 	}
 
@@ -111,6 +121,7 @@ public class InsercionQS {
 		int n = arr.length;
 		for (int i = 1; i < n; ++i) {
 			int key = arr[i];
+			numAsignaciones++;
 			int j = i - 1;
 
 			/*
@@ -118,10 +129,13 @@ public class InsercionQS {
 			 * ahead of their current position
 			 */
 			while (j >= 0 && arr[j] > key) {
+				numComparaciones++;
 				arr[j + 1] = arr[j];
 				j = j - 1;
+				numAsignaciones++;
 			}
 			arr[j + 1] = key;
+			numAsignaciones++;
 		}
 	}
 }
