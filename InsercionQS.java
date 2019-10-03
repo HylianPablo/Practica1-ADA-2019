@@ -3,32 +3,30 @@
 //Tras eso, modificar el algoritmo para que se detenga y haga subdivisiones
 //Hacer una memoria de la práctica
 
-import java.lang.Math;
 import java.util.Arrays;
 
 public class InsercionQS {
-	public final static int MAX_TAM_VECTOR = 1000000;
-	public final static int MIN_TAM_VECTOR = 1000;
-	public final static int MAX_VECTOR = 10;
-	public static int tam;
-	public static int TAM_INSERCION;
 	private static long numComparaciones;
 	private static long numAsignaciones;
+	private static int TAM_INSERCION;
 
-	private static long tiempoMedia=0;
-	private static long comparacionesMedia=0;
-	private static long asignacionesMedia=0;
-
+	/*
+	 * Argumento 1 -> numero de vectores a ordenar
+	 * Argumento 2 -> tamaño de vector al que detener Quicksort y empezar insercion
+	 * Argumento 3 -> tamaño total de los vectores
+	 */
 	public static void main(String args[]) {
 		int numVect = Integer.parseInt(args[0]);
 		TAM_INSERCION = Integer.parseInt(args[1]);
-		tam = Integer.parseInt(args[2]);
+		int tam = Integer.parseInt(args[2]);
+		
+		long tiempoMedia = 0;
+		long comparacionesMedia = 0;
+		long asignacionesMedia = 0;
 		int[] array;
 
 		for (int n = 0; n < numVect; n++) {
 
-			// tam = MIN_TAM_VECTOR + (int) (Math.random() * (MAX_TAM_VECTOR -
-			// MIN_TAM_VECTOR));
 			array = new int[tam];
 			numAsignaciones = 0;
 			numComparaciones = 0;
@@ -37,11 +35,13 @@ public class InsercionQS {
 			for (int i = 0; i < tam; i++) {
 				array[i] = (int) (Math.random() * tam);
 			}
+			
 			quickSort(array, 0, tam - 1);
 
 			System.out.println("insDoin");
 			insertion(array);
 			System.out.println("insDone");
+			
 			long tiempoFinal = System.currentTimeMillis();
 
 			tiempoMedia += tiempoFinal-tiempoInicio;
@@ -49,17 +49,25 @@ public class InsercionQS {
 			asignacionesMedia+=numAsignaciones;
 
 		}
+		
+		/*
+		 * Impresion de estadisticas
+		 */
 		System.out.println("Tamaño de vector: " + tam);
 		System.out.println("Tiempo transcurrido: " + tiempoMedia/numVect + " milisegundos.");
 		System.out.println("Número de comparaciones: " + comparacionesMedia/numVect);
-		System.out.println("Número de asignaciones: " +asignacionesMedia/numVect);
+		System.out.println("Número de asignaciones: " + asignacionesMedia/numVect);
 		System.out.println("--------------------------------------");
 	}
 
-	public static int pivote(int[] arr) {
-		int a = (int) (Math.random() * arr.length);
-		int b = (int) (Math.random() * arr.length);
-		int c = (int) (Math.random() * arr.length);
+	/*
+	 * Devuelve la mediana de tres elementos del vector elegidos al azar entre low y high
+	 */
+	public static int pivote(int[] arr, int low, int high) {
+		int longitud = high - low;
+		int a = (int) (Math.random() * longitud) + low;
+		int b = (int) (Math.random() * longitud) + low;
+		int c = (int) (Math.random() * longitud) + low;
 
 		int array[] = new int[3];
 		array[0] = arr[a];
@@ -70,6 +78,9 @@ public class InsercionQS {
 		return array[1];
 	}
 
+	/*
+	 * Algortimo de ordenacion Quicksort
+	 */
 	public static void quickSort(int[] arr, int low, int high) {
 		if (arr == null || arr.length == 0)
 			return;
@@ -77,7 +88,7 @@ public class InsercionQS {
 		if (low >= high)
 			return;
 
-		int pivot = pivote(arr);
+		int pivot = pivote(arr, low, high);
 
 		// make left < pivot and right > pivot
 		int i = low, j = high;
@@ -89,8 +100,8 @@ public class InsercionQS {
 			numComparaciones++;
 
 			while (arr[j] > pivot) {
-				j--;
 				numComparaciones++;
+				j--;
 			}
 			numComparaciones++;
 
@@ -105,18 +116,16 @@ public class InsercionQS {
 		}
 
 		// recursively sort two sub parts
-		if (j - low > TAM_INSERCION && high - i > TAM_INSERCION) {
+		if (low - j < TAM_INSERCION)
+			quickSort(arr, low, j);
 
-			if (low < j)
-				quickSort(arr, low, j);
-
-			if (high > i)
-				quickSort(arr, i, high);
-		}
+		if (high - i > TAM_INSERCION)
+			quickSort(arr, i, high);
 	}
 
-	// Java program for implementation of Insertion Sort
-	/* Function to sort array using insertion sort */
+	/*
+	 * Algortimo de ordenacion por insercion
+	 */
 	public static void insertion(int arr[]) {
 		int n = arr.length;
 		for (int i = 1; i < n; ++i) {
