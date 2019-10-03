@@ -35,6 +35,7 @@ public class InsercionQS {
 			for (int i = 0; i < tam; i++) {
 				array[i] = (int) (Math.random() * tam);
 			}
+			
 			quickSort(array, 0, tam - 1);
 
 			System.out.println("insDoin");
