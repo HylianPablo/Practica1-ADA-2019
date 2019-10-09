@@ -1,6 +1,6 @@
 //TO-DO
+//Grupo 3
 //Crear gráficas
-//Tras eso, modificar el algoritmo para que se detenga y haga subdivisiones
 //Hacer una memoria de la práctica
 
 import java.util.Arrays;
@@ -38,9 +38,7 @@ public class InsercionQS {
 			
 			quickSort(array, 0, tam - 1);
 
-			System.out.println("insDoin");
 			insertion(array);
-			System.out.println("insDone");
 			
 			long tiempoFinal = System.currentTimeMillis();
 
@@ -53,11 +51,7 @@ public class InsercionQS {
 		/*
 		 * Impresion de estadisticas
 		 */
-		System.out.println("Tamaño de vector: " + tam);
-		System.out.println("Tiempo transcurrido: " + tiempoMedia/numVect + " milisegundos.");
-		System.out.println("Número de comparaciones: " + comparacionesMedia/numVect);
-		System.out.println("Número de asignaciones: " + asignacionesMedia/numVect);
-		System.out.println("--------------------------------------");
+		System.out.println(tam+","+numVect+","+TAM_INSERCION+","+tiempoMedia/numVect+","+comparacionesMedia/numVect+","+asignacionesMedia/numVect);
 	}
 
 	/*
