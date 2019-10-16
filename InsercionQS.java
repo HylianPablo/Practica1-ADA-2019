@@ -4,6 +4,8 @@
 //Hacer una memoria de la práctica
 
 import java.util.Arrays;
+import java.lang.management.*;
+import java.math.BigInteger;
 
 public class InsercionQS {
 	private static long numComparaciones;
@@ -20,7 +22,7 @@ public class InsercionQS {
 		TAM_INSERCION = Integer.parseInt(args[1]);
 		int tam = Integer.parseInt(args[2]);
 		
-		long tiempoMedia = 0;
+		BigInteger tiempoMedia = BigInteger.valueOf(0);
 		long comparacionesMedia = 0;
 		long asignacionesMedia = 0;
 		int[] array;
@@ -30,7 +32,7 @@ public class InsercionQS {
 			array = new int[tam];
 			numAsignaciones = 0;
 			numComparaciones = 0;
-			long tiempoInicio = System.currentTimeMillis();
+			long tiempoInicio = getTime();
 
 			for (int i = 0; i < tam; i++) {
 				array[i] = (int) (Math.random() * tam);
@@ -40,9 +42,10 @@ public class InsercionQS {
 
 			insertion(array);
 			
-			long tiempoFinal = System.currentTimeMillis();
+			long tiempoFinal = getTime();
 
-			tiempoMedia += tiempoFinal-tiempoInicio;
+			tiempoMedia = tiempoMedia.add(
+				BigInteger.valueOf(tiempoFinal-tiempoInicio));
 			comparacionesMedia+=numComparaciones;
 			asignacionesMedia+=numAsignaciones;
 
@@ -51,7 +54,7 @@ public class InsercionQS {
 		/*
 		 * Impresion de estadisticas
 		 */
-		System.out.println(tam+","+numVect+","+TAM_INSERCION+","+tiempoMedia/numVect+","+comparacionesMedia/numVect+","+asignacionesMedia/numVect);
+		System.out.println(tam+","+numVect+","+TAM_INSERCION+","+tiempoMedia.longValue()/numVect+","+comparacionesMedia/numVect+","+asignacionesMedia/numVect);
 	}
 
 	/*
@@ -140,5 +143,11 @@ public class InsercionQS {
 			arr[j + 1] = key;
 			numAsignaciones++;
 		}
+	}
+
+	public static long getTime(){
+		ThreadMXBean bean = ManagementFactory.getThreadMXBean( );
+		return bean.isCurrentThreadCpuTimeSupported( ) ?
+		bean.getCurrentThreadCpuTime() : 0L;
 	}
 }
