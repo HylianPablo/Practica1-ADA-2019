@@ -1,7 +1,6 @@
-//TO-DO
 //Grupo 3
-//Crear gráficas
-//Hacer una memoria de la práctica
+//Programa que imprime las ejecuiones promedio.
+
 
 import java.util.Arrays;
 import java.lang.management.*;
@@ -87,7 +86,6 @@ public class InsercionQS {
 
 		int pivot = pivote(arr, low, high);
 
-		// make left < pivot and right > pivot
 		int i = low, j = high;
 		while (i <= j) {
 			while (arr[i] < pivot) {
@@ -112,7 +110,6 @@ public class InsercionQS {
 			}
 		}
 
-		// recursively sort two sub parts
 		if (low - j < TAM_INSERCION)
 			quickSort(arr, low, j);
 
@@ -130,10 +127,6 @@ public class InsercionQS {
 			numAsignaciones++;
 			int j = i - 1;
 
-			/*
-			 * Move elements of arr[0..i-1], that are greater than key, to one position
-			 * ahead of their current position
-			 */
 			while (j >= 0 && arr[j] > key) {
 				numComparaciones++;
 				arr[j + 1] = arr[j];

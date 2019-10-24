@@ -1,7 +1,5 @@
-//TO-DO
 //Grupo 3
-//Crear gráficas
-//Hacer una memoria de la práctica
+//Programa que imprime las ejecuciones individuales.
 
 import java.util.Arrays;
 import java.lang.management.*;
